@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>FET Schedule Generator Tool</h1>
+    <div class="content-section">
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">FET Input Data</legend>
+                <div class="form-group">
+                  {{ form.yearOfGraduation.label(class="form-control-label") }}
+
+                  {% if form.yearOfGraduation.errors %}
+                      {{ form.yearOfGraduation(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.yearOfGraduation.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.yearOfGraduation(class="form-control form-control-lg") }}
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  {{ form.scheduleYear.label(class="form-control-label") }}
+
+                  {% if form.scheduleYear.errors %}
+                      {{ form.scheduleYear(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.scheduleYear.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.scheduleYear(class="form-control form-control-lg") }}
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  {{ form.scheduleSemester.label(class="form-control-label") }}
+
+                  {% if form.scheduleSemester.errors %}
+                      {{ form.scheduleSemester(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.scheduleSemester.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.scheduleSemester(class="form-control form-control-lg") }}
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.csvFetStudentInputFile.label() }}
+                    {{ form.csvFetStudentInputFile(class="form-control-file") }}
+                    {% if form.csvFetStudentInputFile.errors %}
+                        {% for error in form.csvFetStudentInputFile.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.csvFetTimetableInputFile.label() }}
+                    {{ form.csvFetTimetableInputFile(class="form-control-file") }}
+                    {% if form.csvFetTimetableInputFile.errors %}
+                        {% for error in form.csvFetTimetableInputFile.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

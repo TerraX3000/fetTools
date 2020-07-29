@@ -1,0 +1,6 @@
+fetEnv
+.vscode
+outputFile.csv
+outputFile.json
+__pycache__
+.DS_Store
