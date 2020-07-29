@@ -126,7 +126,7 @@ def getTimeStringWithAMPM(dateTimeObject) :
     return timeStringHMM
 
 
-def ripFetFiles(HSclass,schoolYear,semester,student_file_name,fetFileName,output_file_path):
+def ripFetFiles(HSclass,schoolYear,semester,student_file_name,class_teacher_fileName,fetFileName,output_file_path):
     print('\n\n\n\n')
     print('=======================================')
     print('===   Generating FET Output Files   ===')
@@ -149,6 +149,7 @@ def ripFetFiles(HSclass,schoolYear,semester,student_file_name,fetFileName,output
             # if len(schoolYear) < 1 : schoolYear = '2020'
             # semester = input('Enter the semester (Fall or Spring)')
             # if len(semester) < 1 : semester = 'Fall'
+            classTeacher_file = open(class_teacher_fileName)
         except :
             print('===Error with input data===')
             print("Exception in user code:")
@@ -178,6 +179,22 @@ def ripFetFiles(HSclass,schoolYear,semester,student_file_name,fetFileName,output
         except :
             print('===Error creating team-student mapping dictionary')
             break
+
+        # Create a class-teacher mapping dictionary
+        try:
+            classTeacherMap = dict()
+            for row in classTeacher_file:
+                rowValues = row.split(',')
+                className = rowValues[0].strip()
+                teacherName = rowValues[1].strip()
+                classTeacherMap.update({className : teacherName})
+
+            jsonClassTeacherMap = json.dumps(classTeacherMap, indent=4, separators=("", " = "))
+            print(jsonClassTeacherMap)
+        except :
+            print('===Error creating class-teacher mapping dictionary')
+            break
+                
 
         try :
             # Inport the FET timetable file into a Python dictionary
@@ -250,6 +267,10 @@ def ripFetFiles(HSclass,schoolYear,semester,student_file_name,fetFileName,output
                     # Note: the endTime will be updated each time there is a new row for the same activity
                     endTime = addTime(startTime,30)
 
+                # Add the name of the teacher for any class listed in the classTeacherMap
+                if subject in classTeacherMap:
+                    teacher = classTeacherMap[subject]
+
                 studentSets = getFetField(fetRow,3)
                 chattStateANumber = getChattStateANumber(studentSets)
                 firstName = getName(studentSets,"firstName")
@@ -291,6 +312,7 @@ def ripFetFiles(HSclass,schoolYear,semester,student_file_name,fetFileName,output
                         "endTime" : endTime,
                         "subject" : subject,
                         "campus" : campus,
+                        "teacher" : teacher,
                         "online" : online,
                         "comments" : comments,
                         "activityTags" : activityTags,
@@ -392,7 +414,7 @@ def ripFetFiles(HSclass,schoolYear,semester,student_file_name,fetFileName,output
                     # Include blanks for fields not included in FET file
                     courseNumber = ''
                     sectionID = ''
-                    teacher = ''
+                    teacher = fullSchedule[student]["activities"][activity]["teacher"]
                     online = str(fullSchedule[student]["activities"][activity]["online"])
                     indStudy = '0'
                     comments = fullSchedule[student]["activities"][activity]["comments"]

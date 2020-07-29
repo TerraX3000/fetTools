@@ -8,5 +8,6 @@ class UploadFetDataForm(FlaskForm):
     scheduleYear = StringField('Schedule Year (YYYY)', validators=[DataRequired()])
     scheduleSemester = StringField('Schedule Semester (Fall or Spring)', validators=[DataRequired()])
     csvFetStudentInputFile = FileField('FET Student Input File (*.csv format)', validators=[FileAllowed(['csv']),FileRequired()])
+    csvFetClassTeacherInputFile = FileField('FET Class Teacher Input File (*.csv format)', validators=[FileAllowed(['csv']),FileRequired()])
     csvFetTimetableInputFile = FileField('FET Timetable Input File (*.csv format)', validators=[FileAllowed(['csv']),FileRequired()])
     submit = SubmitField('Generate Schedule File')
